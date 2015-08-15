@@ -419,8 +419,10 @@ void TeamDetector::findRobotsByModel(::google::protobuf::RepeatedPtrField< ::SSL
   const int MaxDetections = _other_markers_max_detections;
   Marker cen; // center marker
   Marker markers[MaxDetections];
-  const float marker_max_query_dist = _other_markers_max_query_distance;
-  const float marker_max_dist = _pattern_max_dist;
+  //const float marker_max_query_dist = _other_markers_max_query_distance;
+  const float marker_max_query_dist = 300.0f;
+  //const float marker_max_dist = _pattern_max_dist;
+  const float marker_max_dist = 300.0f;
 
   // partially forget old detections
   //decaySeen();
@@ -439,7 +441,6 @@ void TeamDetector::findRobotsByModel(::google::protobuf::RepeatedPtrField< ::SSL
     //TODO add masking:
     //if(det.mask.get(reg->cen_x,reg->cen_y) >= 0.5){
     if (true || field_filter.isInFieldOrPlayableBoundary(reg_center)) {
-       printf("blah"); fflush(stdout);
       cen.set(reg,reg_center3d,getRegionArea(reg,_robot_height));
       int num_markers = 0;
 
@@ -461,6 +462,7 @@ void TeamDetector::findRobotsByModel(::google::protobuf::RepeatedPtrField< ::SSL
           m.dist = ofs.length();
           m.angle = ofs.angle();
 
+          printf("m.dist = %f, marker_max_dist = %f\n", m.dist, marker_max_dist); fflush(stdout);
           if(m.dist>0.0 && m.dist<marker_max_dist){
             num_markers++;
           }
@@ -485,6 +487,7 @@ void TeamDetector::findRobotsByModel(::google::protobuf::RepeatedPtrField< ::SSL
           markers[i].next_angle_dist = angle_pos(angle_diff(markers[i].angle,markers[j].angle));
         }
 
+        printf("blah"); fflush(stdout);
         if (model.findPattern(res,markers,num_markers,_pattern_fit_params,_camera_params)) {
               robot=addRobot(robots,res.conf,_max_robots*2);
               if (robot!=0) {

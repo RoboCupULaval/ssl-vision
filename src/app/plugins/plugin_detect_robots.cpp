@@ -145,8 +145,10 @@ ProcessResult PluginDetectRobots::process(FrameData * data, RenderOptions * opti
       _notifier.changeSlotOtherChange();
     }
 
+    if (robotlist->size() > 0){
     printf("DETECTED %d robots on team %d\n",robotlist->size(),team_i);
     fflush(stdout);
+    }
   }
   return ProcessingOk;
 

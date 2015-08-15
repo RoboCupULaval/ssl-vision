@@ -385,12 +385,15 @@ void MultiPatternModel::recheckColorsUsed() {
 }
 
 bool MultiPatternModel::findPattern(PatternDetectionResult & result, Marker * markers,int num_markers, const PatternFitParameters & fit_params,const CameraParameters& camera_params) const {
+  printf("sq %d\n",sq(9)); fflush(stdout);
+  printf("FINDING PATTERN\n"); fflush(stdout);
   if(markers==0 || num_markers<0) return(false);
 
   int best_idx = -1;
   int best_ofs = 0;
   double best_sse = sq(fit_params.fit_max_error);
-
+  printf("DETECTED %d\n",sq(9)); fflush(stdout);
+  
   for(int ofs=0; ofs<num_markers; ofs++){
     // calculate pattern code
     pattern_t pattern = 0x00;
