@@ -206,10 +206,12 @@ void TeamDetector::findRobotsByTeamMarkerOnly(::google::protobuf::RepeatedPtrFie
     _camera_params.image2field(reg_center3d,reg_img_center,_robot_height);
     vector2d reg_center(reg_center3d.x,reg_center3d.y);
 
+
     //TODO: add confidence masking:
     //float conf = det.mask.get(reg->cen_x,reg->cen_y);
     double conf=1.0;
-    if (field_filter.isInFieldOrPlayableBoundary(reg_center) &&  ((_histogram_enable==false) || checkHistogram(reg,image)==true)) {
+    if (((_histogram_enable==false) || checkHistogram(reg,image)==true)) {
+    //if (field_filter.isInFieldOrPlayableBoundary(reg_center) &&  ((_histogram_enable==false) || checkHistogram(reg,image)==true)) {
       double area = getRegionArea(reg,_robot_height);
       double area_err = fabs(area - _center_marker_area_mean);
 
@@ -436,7 +438,8 @@ void TeamDetector::findRobotsByModel(::google::protobuf::RepeatedPtrField< ::SSL
     vector2d reg_center(reg_center3d.x,reg_center3d.y);
     //TODO add masking:
     //if(det.mask.get(reg->cen_x,reg->cen_y) >= 0.5){
-    if (field_filter.isInFieldOrPlayableBoundary(reg_center)) {
+    if (true || field_filter.isInFieldOrPlayableBoundary(reg_center)) {
+       printf("blah"); fflush(stdout);
       cen.set(reg,reg_center3d,getRegionArea(reg,_robot_height));
       int num_markers = 0;
 
